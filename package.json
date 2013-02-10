@@ -1,0 +1,14 @@
+{
+    "name": "Ace File Editor",
+    "main": "index.html",
+    "window": {
+        "title": "File Editor",
+        "toolbar": false,
+        "position": "center",
+        "width": 800,
+        "height": 700,
+        "resizable": true,
+        "show": false,
+	    "frame": true
+    }
+}
