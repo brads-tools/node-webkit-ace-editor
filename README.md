@@ -10,8 +10,6 @@ Features from Ace
 
 Bootstrap was useful for creating the Top App Navigation.
 
-__Fork if you like!__
-
 includes jquery
 
 ----
