@@ -20,4 +20,4 @@ This source is ready to load..  follow loading instruction from download link
 
 enjoy - Bradley Matusiak - bmatusiak@gmail.com
 
-Start this project @ github https://github.com/brads-tools/node-webkit-ace-editor/stargazers
+Star this project @ github https://github.com/brads-tools/node-webkit-ace-editor/stargazers
