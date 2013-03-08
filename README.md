@@ -16,7 +16,10 @@ includes jquery
 
 To run: Download `node-webkit` @ https://github.com/rogerwang/node-webkit
 
-This source is ready to load..  follow loading instruction from download link
+Its best if you [build this app](https://github.com/rogerwang/node-webkit/wiki/How-to-package-and-distribute-your-apps) using `node-webkit` package builder.
+
+This source is ready to build..  follow building instruction from above link
+
 
 enjoy - Bradley Matusiak - bmatusiak@gmail.com
 
