@@ -3,7 +3,7 @@ node-webkit-ace-editor
 
 This is a Basic Text Editor(made for quick changes when your not on c9.io)
 
-Features from Ace
+Features in node-webkit-ace-editor
 
 *   Highlighting
 *   Themes
@@ -12,6 +12,8 @@ Features from Ace
 Bootstrap was useful for creating the Top App Navigation.
 
 includes jquery
+
+[ace for webpages](http://ace.ajax.org/#nav=about)
 
 ----
 
