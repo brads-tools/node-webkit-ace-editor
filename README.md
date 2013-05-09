@@ -7,6 +7,7 @@ Features from Ace
 
 *   Highlighting
 *   Themes
+*   jsbeautify  (ctrl+shift+b)
 
 Bootstrap was useful for creating the Top App Navigation.
 
