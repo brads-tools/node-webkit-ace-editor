@@ -7,7 +7,7 @@ if(!window.appLoad){
         var detectedMode;
         
         var Range = ace.require("ace/range").Range;
-        var jsbeautify = require("./jsbeautify/jsbeautify-min.js");
+        var jsbeautify = require("./jsbeautify/jsbeautify.js");
         
         var win = gui.Window.get(); 
         win.show();
