@@ -2,13 +2,18 @@ if(!window.appLoad){
     var appconfig = require("./package.json");
     window.appLoad = function(gui) {
         
+        var ace = window.ace;
+        
+        var detectedMode;
+        
+        var Range = ace.require("ace/range").Range;
+        var jsbeautify = require("./jsbeautify/jsbeautify-min.js");
+        
         var win = gui.Window.get(); 
         win.show();
         var fs = require("fs");
         var Path = require("path");
     
-        var ace = window.ace;
-        
         if(!window.global.OpenerLoaded){
             window.global.OpenerLoaded = true;
             gui.App.on("open",function(filename){
@@ -22,6 +27,83 @@ if(!window.appLoad){
         }
         
         var editor = ace.edit("editor");
+        
+        editor.commands.addCommand({
+            name: 'beautify',
+            bindKey: {mac: "Command-Shift-B", win: "Shift-Ctrl-B"},
+            exec: function(editor) {
+                
+                var sel = editor.selection;
+                var session = editor.session;
+                var range = sel.getRange();
+                var options = {};
+                    options.space_before_conditional = true;
+                    options.keep_array_indentation =  false;
+                    options.preserve_newlines =  true;
+                    options.unescape_strings =  true;
+                    options.jslint_happy =  false;
+                    options.brace_style =  "end-expand";
+            
+                    if (session.getUseSoftTabs()) {
+                        options.indent_char = " ";
+                        options.indent_size = session.getTabSize();
+                    } else {
+                        options.indent_char = "\t";
+                        options.indent_size = 1;
+                    }
+                
+                var line = session.getLine(range.start.row);
+                var indent = line.match(/^\s*/)[0];
+                var trim = false;
+        
+                if (range.start.column < indent.length)
+                    range.start.column = 0;
+                else
+                    trim = true;
+        
+        
+                var value = session.getTextRange(range);
+                $("[data-mode]").parent().removeClass("active");
+                //var syntax = session.syntax;
+                var type = null;
+        
+                if (detectedMode == "javascript") {
+                    type = "js";
+                } else if (detectedMode == "css") {
+                    type = "css";
+                } if (/^\s*<!?\w/.test(value)) {
+                    type = "html";
+                } else if (detectedMode == "xml") {
+                    type = "html";
+                } else if (detectedMode == "html") {
+                    if (/[^<]+?\{[\s\-\w]+:[^}]+;/.test(value))
+                        type = "css";
+                    else if (/<\w+[ \/>]/.test(value))
+                        type = "html";
+                    else
+                        type = "js";
+                }
+        
+                try {
+                    value = jsbeautify[type + "_beautify"](value, options);
+                    if (trim)
+                        value = value.replace(/^/gm, indent).trim();
+                    if (range.end.column === 0)
+                        value += "\n" + indent;
+                }
+                catch (e) {
+                    window.alert("Error: This code could not be beautified " + syntax + " is not supported yet");
+                    return;
+                }
+        
+                var end = session.replace(range, value);
+                sel.setSelectionRange(Range.fromPoints(range.start, end));
+                
+            },
+            readOnly: false // false if this command should not apply in readOnly mode
+        });
+        
+        
         var theme = window.localStorage.aceTheme || "twilight";
         editor.setTheme("ace/theme/"+theme);
         var editorSession = editor.getSession();
@@ -145,7 +227,6 @@ if(!window.appLoad){
             return false;
         });
         
-        var detectedMode;
         function openFile(path) {
             if (hasChanged && !saveFileFN(true)) return false;
             currentFile = null;
@@ -286,7 +367,7 @@ if(!window.appLoad){
         $("[data-mode]").click(function(e) {
             var mode = e.target.attributes["data-mode"].value;
             editor.getSession().setMode("ace/mode/" + mode);
-            
+            detectedMode = mode;
             $("[data-mode]").parent().removeClass("active");
             $("[data-mode='"+mode+"']").parent().addClass("active");
         });
